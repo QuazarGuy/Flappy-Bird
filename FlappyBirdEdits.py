@@ -4,6 +4,7 @@ from random import randint
 from ground import Ground
 from upperPipe import UpperPipe
 from lowerPipe import LowerPipe
+from bird import Bird
 
 pygame.init()
 
@@ -18,6 +19,7 @@ background = pygame.image.load('assets\\bg.png')
 birdImg = pygame.image.load('assets\\bird_sing.png')
 
 enemy_list = pygame.sprite.Group()  # Enemy sprites
+player = pygame.sprite.Group()
 
 # variables for the bird moving
 y = 210
@@ -61,11 +63,6 @@ def initEnemies():
         enemy_list.add(ground)
         x += 1
 
-
-def drawBird(y):
-    gameDisplay.blit(birdImg, (50, y))
-
-
 def drawScore(counter):
     font = pygame.font.SysFont(None, 20, False)
     text = font.render("Score: "+str(counter), True, (0, 0, 0))
@@ -97,7 +94,6 @@ def notStarted(started):
 
         drawBackground()
         enemy_list.draw(gameDisplay)
-        drawBird(y)
         drawScore(pointCounter)
         drawStart()
         pygame.display.update()
@@ -133,6 +129,10 @@ while playing:
 
     y = y - y_change
 
+    bird = Bird(50, y)
+    bird_list = pygame.sprite.Group()
+    bird_list.add(bird)
+
     # this'll be used to make the game quit if flappy hits the top or bottom of the screen. For testing purposes I've
     # got it set so right now he just stops moving.
     if y >= 300:  # ground distance
@@ -157,7 +157,8 @@ while playing:
     drawBackground()
     enemy_list.update()
     enemy_list.draw(gameDisplay)
-    drawBird(y)
+    bird_list.update()
+    bird_list.draw(gameDisplay)
     drawScore(pointCounter)
     pygame.display.update()
     clock.tick(60)
