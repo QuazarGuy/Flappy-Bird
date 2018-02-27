@@ -1,4 +1,5 @@
 import pygame
+from pipe import Pipes
 from random import randint
 
 pygame.init()
@@ -27,13 +28,11 @@ def drawBackground():
     gameDisplay.blit(background, (288, -10))
 
 # Probably going to make a class for pipes
-def pipePair(pipeGap, x, y):
-    gameDisplay.blit(upperPipe, (x, y))
-    gameDisplay.blit(lowerPipe, (x, y + pipeGap))
+def initEnemies(pipeDistance, pipeGap):
+    enemy_list.add()
+    
 
-def drawPipes(pipeDistance, pipeGap):
-    pipePair(pipeGap, 230, -160)
-    pipePair(pipeGap, 230 + pipeDistance, -160)
+#    pipePair(pipeGap, 230 + pipeDistance, -160)
 
 def drawGround():
     gameDisplay.blit(ground, (0, 320))
