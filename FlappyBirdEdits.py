@@ -22,7 +22,7 @@ birdImg = pygame.image.load('assets\\bird_sing.png')
 enemy_list = pygame.sprite.Group()  # Enemy sprites
 
 PIPE_DISTANCE = 150
-PIPE_GAP = 360 + 40  # no gap = 360
+PIPE_GAP = 360 + 60  # no gap = 360
 
 # variables for the bird moving
 y = 210
@@ -59,11 +59,11 @@ def initEnemies(pipeDistance, pipeGap):
         x += 336
     x = 0
     y = -160
-    while (x < display_width):
+    while (x < display_width + 150):
         upperPipe = UpperPipe(x, y)
-        enemy_list.add(ground)
+        enemy_list.add(upperPipe)
         lowerPipe = LowerPipe(x, y + pipeGap)
-        enemy_list.add(ground)
+        enemy_list.add(lowerPipe)
         x += pipeDistance
 
 

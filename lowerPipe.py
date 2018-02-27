@@ -9,4 +9,10 @@ class LowerPipe(pygame.sprite.Sprite):
         self.rect.y = y
 
     def update(self):
-        self.rect.x -= 1
+        if (self.rect.x == -150):
+            self.reset_pos()
+        else:
+            self.rect.x -= 1
+
+    def reset_pos(self):
+        self.rect.x = 400
