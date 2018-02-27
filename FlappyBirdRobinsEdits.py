@@ -1,5 +1,9 @@
 import pygame
 from random import randint
+from ground import Ground
+from upperPipe import UpperPipe
+from lowerPipe import LowerPipe
+from bird import Bird
 
 pygame.init()
 
@@ -14,10 +18,10 @@ playing = True
 
 # Load Images
 background = pygame.image.load('assets\\bg.png')
-ground = pygame.image.load('assets\\ground.png')
-upperPipe = pygame.image.load('assets\\tube1.png')
-lowerPipe = pygame.image.load('assets\\tube2.png')
 birdImg = pygame.image.load('assets\\bird_sing.png')
+
+enemy_list = pygame.sprite.Group()  # Enemy sprites
+player = pygame.sprite.Group()
 
 PIPE_DISTANCE = 150
 PIPE_GAP = 360 + 40  # no gap = 360
@@ -49,24 +53,24 @@ def drawBackground():
     gameDisplay.blit(background, (288, -10))
 
 
-# Probably going to make a class for pipes
-def pipePair(pipeGap, x, y):
-    gameDisplay.blit(upperPipe, (x, y))
-    gameDisplay.blit(lowerPipe, (x, y + pipeGap))
+def initEnemies(pipeDistance, pipeGap):
+    x = 0
+    while (x < display_width + 678):
+        ground = Ground(x, display_width)
+        enemy_list.add(ground)
+        x += 336
+    x = 0
+    y = -160
+    while (x < display_width):
+        upperPipe = UpperPipe(x, y)
+        enemy_list.add(ground)
+        lowerPipe = LowerPipe(x, y + pipeGap)
+        enemy_list.add(ground)
+        x += pipeDistance
 
 
-def drawPipes(pipeDistance, pipeGap):
-    pipePair(pipeGap, 230, -160)
-    pipePair(pipeGap, 230 + pipeDistance, -160)
+# def drawBird(y):
 
-
-def drawGround():
-    gameDisplay.blit(ground, (0, 320))
-    gameDisplay.blit(ground, (336, 320))
-
-
-def drawBird(y):
-    gameDisplay.blit(birdImg, (50, y))
 
 
 def drawScore(counter):
@@ -81,9 +85,11 @@ def drawStart():
     gameDisplay.blit(text, (180, 190))
 
 
+initEnemies(PIPE_DISTANCE, PIPE_GAP)
+
 def notStarted(started):
 
-    while started == False:
+    while not started:
         for event in pygame.event.get():
             print(event)
             if event.type == pygame.QUIT:
@@ -97,9 +103,8 @@ def notStarted(started):
             started = True
 
         drawBackground()
-        drawPipes(PIPE_DISTANCE, PIPE_GAP)
-        drawGround()
-        drawBird(y)
+        enemy_list.draw(gameDisplay)
+        # drawBird(y)
         drawScore(pointCounter)
         drawStart()
         pygame.display.update()
@@ -112,8 +117,9 @@ while playing:
             playing = False
     # Do stuff
 
-    notStarted(startPressed)
-    startPressed = True
+    if startPressed == False:
+        notStarted(startPressed)
+
 
     # bird jumps up
     if event.type == pygame.KEYDOWN:
@@ -135,6 +141,10 @@ while playing:
 
     y = y - y_change
 
+    bird = Bird(50, y)
+    bird_list = pygame.sprite.Group()
+    bird_list.add(bird)
+
     # this'll be used to make the game quit if flappy hits the top or bottom of the screen. For testing purposes I've
     # got it set so right now he just stops moving.
     if y >= 300:  # ground distance
@@ -155,11 +165,13 @@ while playing:
         pointCounter = pointCounter + 1
         sinceLastPointCounter = 0  # resents the counter until next point
 
-    # Draw stuff
+    # Update stuff
     drawBackground()
-    drawPipes(PIPE_DISTANCE, PIPE_GAP)
-    drawGround()
-    drawBird(y)
+    enemy_list.update()
+    enemy_list.draw(gameDisplay)
+    bird_list.update()
+    bird_list.draw(gameDisplay)
+    #drawBird(y)
     drawScore(pointCounter)
     pygame.display.update()
     clock.tick(60)
