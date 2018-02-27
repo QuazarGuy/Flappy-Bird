@@ -1,4 +1,5 @@
 import pygame
+import config as cfg
 from random import randint
 from ground import Ground
 from upperPipe import UpperPipe
@@ -6,10 +7,7 @@ from lowerPipe import LowerPipe
 
 pygame.init()
 
-display_width = 460
-display_height = 410
-
-gameDisplay = pygame.display.set_mode((display_width, display_height))
+gameDisplay = pygame.display.set_mode((cfg.DISPLAY_WIDTH, cfg.DISPLAY_HEIGHT))
 pygame.display.set_caption('Flappy Bird')
 
 clock = pygame.time.Clock()
@@ -20,9 +18,6 @@ background = pygame.image.load('assets\\bg.png')
 birdImg = pygame.image.load('assets\\bird_sing.png')
 
 enemy_list = pygame.sprite.Group()  # Enemy sprites
-
-PIPE_DISTANCE = 150
-PIPE_GAP = 360 + 60  # no gap = 360
 
 # variables for the bird moving
 y = 210
@@ -51,20 +46,20 @@ def drawBackground():
     gameDisplay.blit(background, (288, -10))
 
 
-def initEnemies(pipeDistance, pipeGap):
-    x = 0
-    while (x < display_width + 678):
-        ground = Ground(x, display_width)
-        enemy_list.add(ground)
-        x += 336
+def initEnemies():
     x = 0
     y = -160
-    while (x < display_width + 150):
+    while (x < cfg.numPipes):
         upperPipe = UpperPipe(x, y)
         enemy_list.add(upperPipe)
-        lowerPipe = LowerPipe(x, y + pipeGap)
+        lowerPipe = LowerPipe(x, y)
         enemy_list.add(lowerPipe)
-        x += pipeDistance
+        x += 1
+    x = 0
+    while (x < cfg.numGround):
+        ground = Ground(x)
+        enemy_list.add(ground)
+        x += 1
 
 
 def drawBird(y):
@@ -77,13 +72,13 @@ def drawScore(counter):
     gameDisplay.blit(text, (3, 3))
 
 def drawStart():
-    pygame.draw.rect(gameDisplay, (255, 255, 255), ((display_width-200)/2, (display_height-50)/2, 200, 50))
+    pygame.draw.rect(gameDisplay, (255, 255, 255), ((cfg.DISPLAY_WIDTH-200)/2, (cfg.DISPLAY_HEIGHT-50)/2, 200, 50))
     font = pygame.font.SysFont(None, 50, False)
     text = font.render("Start!", True, (0, 0, 0))
     gameDisplay.blit(text, (180, 190))
 
 
-initEnemies(PIPE_DISTANCE, PIPE_GAP)
+initEnemies()
 
 def notStarted(started):
 
@@ -97,7 +92,7 @@ def notStarted(started):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
 
-        if (display_width-200)/2 + 200 > mouse[0] > (display_width-200)/2 and (display_height-50)/2 + 50 > mouse[1] > (display_height-50)/2 and click[0] == 1:
+        if (cfg.DISPLAY_WIDTH-200)/2 + 200 > mouse[0] > (cfg.DISPLAY_WIDTH-200)/2 and (cfg.DISPLAY_HEIGHT-50)/2 + 50 > mouse[1] > (cfg.DISPLAY_HEIGHT-50)/2 and click[0] == 1:
             started = True
 
         drawBackground()
@@ -156,7 +151,7 @@ while playing:
 
     if sinceLastPointCounter >= framesForPoint:
         pointCounter = pointCounter + 1
-        sinceLastPointCounter = 0  # resents the counter until next point
+        sinceLastPointCounter = 0  # resets the counter until next point
 
     # Update stuff
     drawBackground()
