@@ -35,9 +35,12 @@ jumpFramesCounter = 0  # how long the bird has actually jumped
 # variables for score counting
 # NOTE: All of this'll have to be tweaked; for now it's just the framework that'll ...probably give the player
 # a lot of points.
-framesForPoint = 90  # number of frames before point is awarded
+framesForPoint = cfg.PIPE_DISTANCE  # number of frames before point is awarded
 sinceLastPointCounter = 0  # how many frames it's been since the last point was awarded
 pointCounter = 0  # the number of points the player has
+
+startCounterTime = cfg.DISPLAY_WIDTH
+counterStarted = False
 
 # variables for start button
 startPressed = False
@@ -146,12 +149,19 @@ while playing:
     # testing code:
 
     # player gets points
-    if sinceLastPointCounter < framesForPoint:
-        sinceLastPointCounter = sinceLastPointCounter + 1
+    if counterStarted == True:
+        if sinceLastPointCounter < framesForPoint:
+            sinceLastPointCounter = sinceLastPointCounter + 1
 
-    if sinceLastPointCounter >= framesForPoint:
-        pointCounter = pointCounter + 1
-        sinceLastPointCounter = 0  # resets the counter until next point
+        if sinceLastPointCounter >= framesForPoint:
+            pointCounter = pointCounter + 1
+            sinceLastPointCounter = 0  # resets the counter until next point
+
+    if counterStarted == False:
+        startCounterTime = startCounterTime - 1
+        if startCounterTime == 0:
+            counterStarted = True
+
 
     # Update stuff
     drawBackground()
