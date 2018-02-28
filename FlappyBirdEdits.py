@@ -159,6 +159,7 @@ while playing:
     enemy_list.draw(gameDisplay)
     bird_list.update()
     bird_list.draw(gameDisplay)
+    bird.checkCollision(enemy_list)
     drawScore(pointCounter)
     pygame.display.update()
     clock.tick(60)

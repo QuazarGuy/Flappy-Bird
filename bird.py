@@ -14,3 +14,7 @@ class Bird(pygame.sprite.Sprite):
 
     def reset_position(self):
         self.rect.y = self.height
+
+    def checkCollision(self, enemy_list):
+        if pygame.sprite.spritecollideany(self, enemy_list, collided = None):
+            quit()

@@ -1,6 +1,6 @@
 DISPLAY_WIDTH = 430
 DISPLAY_HEIGHT = 410
-GAME_SPEED = 1
+GAME_SPEED = 1  # Ground breaks at any speed > 1
 
 # Pipe constants
 PIPE_DISTANCE = 150
