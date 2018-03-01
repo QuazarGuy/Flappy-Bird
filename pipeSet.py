@@ -10,7 +10,7 @@ class PipeSet(pygame.sprite.Sprite):
     # collide can be called on them.
     def __init__(self, x, enemy_list):
         super().__init__()
-        y = randint(0, 15) * 10 + cfg.PIPE_HEIGHT
+        y = randint(0, cfg.PIPE_HEIGHT_VARIANCE) * 10 + cfg.PIPE_HEIGHT
         self.upperPipe = UpperPipe(x, y)
         self.lowerPipe = LowerPipe(x, y + cfg.PIPE_GAP)
         enemy_list.add(self.upperPipe)
@@ -23,7 +23,7 @@ class PipeSet(pygame.sprite.Sprite):
             x = (cfg.numPipes - 1) * cfg.PIPE_DISTANCE
             self.upperPipe.rect.x = x
             self.lowerPipe.rect.x = x
-            y = randint(0, 15) * 10 + cfg.PIPE_HEIGHT
+            y = randint(0, cfg.PIPE_HEIGHT_VARIANCE) * 10 + cfg.PIPE_HEIGHT
             self.upperPipe.rect.y = y
             self.lowerPipe.rect.y = y + cfg.PIPE_GAP
         else:
