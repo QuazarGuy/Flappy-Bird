@@ -6,13 +6,13 @@ GAME_SPEED = 1  # Ground breaks at any speed > 1
 # Bird constants
 START_HEIGHT = 120
 OFFSET = 50
-MAX_FALL = 5
-MAX_RISE = -5
+MAX_FALL = 4
+MAX_RISE = -4
 
 # Pipe constants
-PIPE_HEIGHT = -240
+PIPE_HEIGHT = -280
 PIPE_DISTANCE = 150
-PIPE_GAP = 360 + 100  # no gap = 360
+PIPE_GAP = 360 + 50  # no gap = 360
 if DISPLAY_WIDTH % PIPE_DISTANCE == 0:
     numPipes = DISPLAY_WIDTH // PIPE_DISTANCE + 1
 else:

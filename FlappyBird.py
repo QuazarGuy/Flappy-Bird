@@ -5,8 +5,8 @@
 
 import pygame
 import config as cfg
-from random import randint
 from ground import Ground
+from pipeSet import PipeSet
 from upperPipe import UpperPipe
 from lowerPipe import LowerPipe
 from bird import Bird
@@ -24,15 +24,12 @@ playing = True
 
 background = pygame.image.load('assets\\bg.png')
 
-# Initializes the ground and pipes
+# Initializes the ground and pipes and add them to the enemy_list
 def initEnemies():
     x = 0
-    y = cfg.PIPE_HEIGHT
     while (x < cfg.numPipes):
-        upperPipe = UpperPipe(x, y)
-        enemy_list.add(upperPipe)
-        lowerPipe = LowerPipe(x, y)
-        enemy_list.add(lowerPipe)
+        pipeSet = PipeSet(x, enemy_list)
+        pipeSets.append(pipeSet)
         x += 1
     x = 0
     while (x < cfg.numGround):
@@ -61,6 +58,7 @@ def drawStartButton():
 bird = Bird()
 player_list = pygame.sprite.Group() # Player sprite
 player_list.add(bird)
+pipeSets = []
 enemy_list = pygame.sprite.Group()  # Enemy sprites
 initEnemies()
 
@@ -97,6 +95,8 @@ while playing:
 
     # Update stuff
     enemy_list.update()
+    for pipeSet in pipeSets:
+        pipeSet.update()
     bird.checkCollision(enemy_list)
     bird.update(event)
     score.update()
